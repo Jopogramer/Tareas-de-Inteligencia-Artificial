@@ -8,9 +8,9 @@ env = gym.make("Taxi-v3")
 q_table = np.zeros([env.observation_space.n, env.action_space.n])
 
 # Hiperparámetros
-alpha = 0.1     # tasa de aprendizaje
-gamma = 0.6     # factor de descuento
-epsilon = 0.1   # tasa de exploración
+alpha = 0.1    
+gamma = 0.6     
+epsilon = 0.1  
 episodes = 1000
 
 # Para seguimiento de recompensas

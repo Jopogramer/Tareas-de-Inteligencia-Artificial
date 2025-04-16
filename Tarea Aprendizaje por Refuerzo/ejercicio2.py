@@ -1,6 +1,6 @@
 import numpy as np
 
-#  Entorno personalizado
+# Entorno personalizado
 class CustomEnv:
     def __init__(self):
         self.state = 0
@@ -17,32 +17,32 @@ class CustomEnv:
         done = self.state >= self.goal
         return self.state, reward, done
 
-#  Parámetros y configuración
-actions = [1, 2]  # acciones posibles
+# Parámetros y configuración
+actions = [1, 2]
 num_states = 21
 q_table = np.zeros((num_states, len(actions)))
 
-alpha = 0.1       # tasa de aprendizaje
-gamma = 0.9       # descuento futuro
-epsilon = 1.0     # empieza completamente aleatorio
+alpha = 0.1
+gamma = 0.9
+epsilon = 1.0
 epsilon_min = 0.01
 epsilon_decay = 0.99
 episodes = 300
 
 env = CustomEnv()
 
-#  Bucle de entrenamiento (aprende desde política aleatoria)
+# Bucle de entrenamiento
 for ep in range(episodes):
     state = env.reset()
     done = False
     total_reward = 0
 
-    while not done and state < num_states:
-        # Política epsilon-greedy (empieza aleatoria y mejora)
+    while not done:
+        # Selección de acción (ε-greedy)
         if np.random.uniform(0, 1) < epsilon:
-            action_idx = np.random.choice([0, 1])  # aleatorio
+            action_idx = np.random.choice([0, 1])
         else:
-            action_idx = np.argmax(q_table[state])  # mejor acción conocida
+            action_idx = np.argmax(q_table[state])
 
         action = actions[action_idx]
         next_state, reward, done = env.step(action)
@@ -57,16 +57,12 @@ for ep in range(episodes):
 
         state = next_state
 
-    # Disminuir epsilon (menos aleatorio con el tiempo)
+    # Disminuir epsilon
     if epsilon > epsilon_min:
         epsilon *= epsilon_decay
 
-    # Mostrar progreso cada 50 episodios
+    # Mostrar progreso
     if (ep + 1) % 50 == 0:
-        print(f" Episodio {ep + 1} → Recompensa total: {total_reward:.2f}, ε = {epsilon:.3f}")
+        print(f"Episodio {ep + 1} → Recompensa total: {total_reward:.2f}, ε = {epsilon:.3f}")
 
-#  Resultados finales
-print("\n Entrenamiento completado")
-print(" Tabla Q final:")
-for s in range(11):
-    print(f"Estado {s:2d}: Acción 1 → {q_table[s][0]:.2f}, Acción 2 → {q_table[s][1]:.2f}")
+print("\nEntrenamiento completado")
